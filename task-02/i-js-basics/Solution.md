@@ -8,7 +8,7 @@ JavaScript is notorious for its surprising ways of handling datatypes on occasio
 One of the gotchas I found is `"==" is not the same as "==="`  
 For this I also have an example, follows as :
 
-```bash
+```js
 x=45;
 y='45';
 console.log(x==y); // This will log as True ;
@@ -16,7 +16,7 @@ console.log(x===y); // This will return or log False ;
 ```
 The other one which I have found is Java Script is `Case sensitive` 
 
-```bash
+```js
 king = "Thammudu";
 King = "Babu"; // here this does'nt show any error why because it is Case Sensitive;
 
@@ -32,7 +32,7 @@ Imagine you are building a shopping cart. Write some documentation on the data t
 
 I did some research on the data types which are,
 
-``` bash
+``` markdown
 
                                                 Data Types
                                                     |
@@ -79,7 +79,7 @@ See if you can create a function that has a mix of parameters and parameters wit
 
 ### Solution :
 
-```bash 
+```js 
 function Fullname (x) {
     console.log("Hello"+ x);   
 } 
@@ -107,7 +107,7 @@ Create a program that is written first with logical operators, and then rewrite 
 
 #### Version using Logical Operators
 
-```bash
+```js
 function checkNumber(num) {
     if (num > 0) {
         return "Positive";
@@ -125,7 +125,7 @@ console.log(checkNumber(0));   // Output: Zero
 
 #### Version using a Ternary Expression
 
-```bash
+```js
 const checkNumber = (num) => num > 0 ? "Positive" : num < 0 ? "Negative" : "Zero";
 
 console.log(checkNumber(5));   // Output: Positive
@@ -137,7 +137,7 @@ console.log(checkNumber(0));   // Output: Zero
 
 Given the following array allStudents representing all students and their grades, construct a new array studentsWhoPass containing all students who pass.
 
-```bash
+```js
 let allStudents = [
   'A',
   'B-',
@@ -152,7 +152,7 @@ let studentsWhoPass = [];
 
 ### Solution ;
 
-```bash
+```js
 let allStudents = [
     'A',
     'B-',
@@ -187,7 +187,7 @@ There are other ways of looping over arrays other than for and while loops. Ther
 
 ### Solution :
 
-```bash 
+```js 
 let iceCreamFlavors = ["Chocolate", "Strawberry", "Vanilla", "Pistachio", "Rocky Road"];
 
 for (let i = 0; i < iceCreamFlavors.length; i++) {
@@ -207,7 +207,7 @@ Create a program that lists every 3rd number between 1-20 and prints it to the c
 
 ### Solution :
 
-```bash
+```js
 for (let i=3 ; i<=20 ; i=i+3){
     console.log(i);
     
