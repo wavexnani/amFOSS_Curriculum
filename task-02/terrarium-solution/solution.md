@@ -232,7 +232,7 @@ Here is the updated css, which I have made the terrarium using the `display : fl
 
 ## Challenge :
 
-Create a program that is written first with logical operators, and then rewrite it using a ternary expression. What's your preferred syntax?
+Add new event handler to your closure to do something more to the plants; for example, double-click a plant to bring it to the front. Get creative!
 
 ### Solution :
 
