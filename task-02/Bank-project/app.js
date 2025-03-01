@@ -1,12 +1,24 @@
 const baseURL = '//localhost:5001'; // Base URL for API requests
 
 const routes = {
-  '/login': { templateId: 'login', title: 'login-page'}, // Route for login page
-  '/dashboard': { templateId: 'dashboard', title: 'dashboard-page' }, // Route for dashboard
-  '/page3' : { templateId: "page3", title: 'page3-page'} // Route for page3
+  '/login': { templateId: 'login', title : 'login Page'}, // Route for login page
+  '/dashboard': { templateId: 'dashboard', title : 'dashboard Page', init: refresh }, // Route for dashboard
+  '/page3' : { templateId: "page3" , title : 'login Page' } // Route for page3
 };
 
-let account = null; // Stores the logged-in user account
+function updateState(property, newData) {
+  state = Object.freeze({
+    ...state,
+    [property]: newData
+  });
+  localStorage.setItem(storageKey, JSON.stringify(state.account));
+}
+
+const storageKey = 'savedAccount';
+
+let state = Object.freeze({
+  account: null
+}); // Stores the logged-in user account
 
 function updateElement(id, textOrNode) {
   const element = document.getElementById(id);
@@ -25,7 +37,7 @@ async function login() {
     updateElement('loginError', ' '); // Clear error message
   }
 
-  account = data; // Store account data
+  updateState('account', data); // Store account data
   navigate('/dashboard'); // Redirect to dashboard
 }
 
@@ -51,11 +63,45 @@ async function createAccount(account) {
   }
 }
 
+
+async function putAccount(id, date, object, amount) {
+  let transaction = { id, date, object, amount: parseFloat(amount) };
+  try {
+    const response = await fetch(`${baseURL}/api/accounts/${state.account.user}/transactions`, {
+      method: 'POST',  // Change to PUT for updating existing data
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(transaction)  // Send updated account data
+    });
+
+    const responseData = await response.json();
+    console.log("Server Response:", responseData);
+    refresh();
+    return responseData;
+    
+
+  } catch (error) {
+    console.error("Error updating account:", error);
+  }
+
+  
+
+  const updatedTransactions = [...state.account.transactions, transaction];
+  
+  updateState('account', {
+    ...state.account,
+    transactions: updatedTransactions
+  });
+
+}
+
+
+
 async function register() {
   const registerForm = document.getElementById('registerForm');
   const formData = new FormData(registerForm); // Get form data
   const jsonData = JSON.stringify(Object.fromEntries(formData)); // Convert form data to JSON
   const result = await createAccount(jsonData); // Send data to create account
+  console.log(result);
 
   if (result.error) {
     document.getElementById('regesterError').innerHTML = `An error occurred , ${result.error}`; // Display error message
@@ -63,14 +109,26 @@ async function register() {
     document.getElementById('regesterError').innerHTML = " "; // Clear error message
   }
 
-  account = result; // Store account data
+  updateState('account', result); // Store account data
   navigate('/dashboard'); // Redirect to dashboard
 }
 
-function datapush(id, date, object, amount) {
-  let transaction = { id, date, object, amount: parseFloat(amount) }; // Create transaction object
-  account.transactions.push(transaction); // Add transaction to account
-}
+
+// function datapush(id, date, object, amount) {
+//   let transaction = { id, date, object, amount: parseFloat(amount) }; // Create transaction object
+  
+//     // Create a new transaction array and update state
+//   const updatedTransactions = [...state.account.transactions, transaction];
+  
+//   updateState('account', {
+//     ...state.account,
+//     transactions: updatedTransactions
+//   });
+
+//   const result = putAccount(state.account.user,state.account); // Send data to create account
+//   console.log(result);
+// }
+
 
 function addTransaction() {
   let dateElement = document.getElementById('Date');
@@ -81,13 +139,13 @@ function addTransaction() {
   let object = objectElement.value.trim();
   let amount = amountElement.value.trim();
 
-  let nu = account.transactions.length > 0 ? parseInt(account.transactions[account.transactions.length - 1].id) + 1 : 1; // Generate new transaction ID
+  let nu = state.account.transactions.length > 0 ? parseInt(state.account.transactions.length) + 1 : 1; // Generate new transaction ID
 
   let sn = nu.toString();
 
-  datapush(sn, date, object, amount); // Add transaction
+  putAccount(sn, date, object, amount); // Add transaction
 
-  console.log(account.transactions);
+  
   
   // Clear inputs after adding
   dateElement.value = "";
@@ -97,39 +155,39 @@ function addTransaction() {
 }
 
 function updateDashboard() {
-  if (!account) {
-    return navigate('/login'); // Redirect if no account
+  
+  if (!state.account) {
+    return logout(); // Redirect if no account
   }
-  console.log(account.transactions);
+
+  if (!state.account.transactions || state.account.transactions.length === 0 || !state.account) {
+    updateElement('nothing','No transactions available'); // Show message if no transactions 
+  } else {
+    updateElement('nothing',''); // Clear message
+  }
+  
   
   const transactionsRows = document.createDocumentFragment(); // Create document fragment
   
-  for (const transaction of account.transactions) {
-    const transactionRow = createTransactionRow(transaction); // Create transaction row
-    const tr = transactionRow.querySelector("tr"); 
-  
-    if (transaction.id % 2 == 0) {
-      tr.style.backgroundColor = "#e3f6f5"; // Alternate row color
-    } else {
-      console.log("it is green");
-      tr.style.backgroundColor = "#bbe4e9"; 
-    }
-  
-    transactionsRows.appendChild(transactionRow);
-  }
+  state.account.transactions.forEach((transaction, index) => {
+    const transactionRow = createTransactionRow(transaction);
+    const tr = transactionRow.querySelector("tr");
 
-  if (!account.transactions || account.transactions.length === 0) {
-    console.log("No transactions available");
-    updateElement('transactions','No transactions available'); // Show message if no transactions
-    document.getElementById('nothing').innerText = 'No transactions available';
-  } else {
-    document.getElementById('nothing').innerText = ''; // Clear message
-  }
+    if (index % 2 === 0) {
+      tr.style.backgroundColor = "#e3f6f5";
+    } else {
+      tr.style.backgroundColor = "#bbe4e9";
+    }
+
+    transactionsRows.appendChild(transactionRow);
+  });
+
+  
 
   updateElement('transactions', transactionsRows); // Update transaction list
-  updateElement('DashboardDescription', account.description);
-  updateElement('balance', account.balance.toFixed(2)); // Update balance
-  updateElement('currency', account.currency); // Update currency
+  updateElement('DashboardDescription', state.account.description);
+  updateElement('balance', state.account.balance.toFixed(2)); // Update balance
+  updateElement('currency', state.account.currency); // Update currency
 }
 
 function createTransactionRow(transaction) {
@@ -152,15 +210,12 @@ function updateRoute() {
   const route = routes[path];
 
   if (!route) {
-      navigate('/login'); // Redirect if route not found
-      return;
+    return navigate('/dashboard'); // Redirect if route not found
   }
 
   document.title = route.title; // Update document title
  
-  if (document.title) {
-    console.log('Dashboard is shown');
-  }
+  
   
   const template = document.getElementById(route.templateId);
   const view = template.content.cloneNode(true);
@@ -172,6 +227,54 @@ function updateRoute() {
     updateDashboard(); // Update dashboard if on dashboard page
   }
 }
+
+
+async function refresh() {
+  await updateAccountData();
+  updateDashboard();
+}
+
+
+
+
+async function updateAccountData() {
+  const account = state.account;
+  if (!account) {
+    return logout();
+  }
+
+  const data = await getAccount(account.user);
+  if (data.error) {
+    return logout();
+  }
+
+  updateState('account', data);
+}
+
+
+
+
+
+function logout() {
+  updateState('account', null);
+  navigate('/login');
+}
+
+
+function init() {
+  const savedAccount = localStorage.getItem(storageKey);
+  if (savedAccount) {
+    updateState('account', JSON.parse(savedAccount));
+  }
+
+  // Our previous initialization code
+  window.onpopstate = () => updateRoute();
+  updateRoute();
+}
+
+init();
+
+
 
 function onLinkClick(event) {
   event.preventDefault(); // Prevent default link behavior
