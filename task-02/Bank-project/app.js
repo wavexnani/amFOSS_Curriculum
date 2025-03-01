@@ -113,23 +113,6 @@ async function register() {
   navigate('/dashboard'); // Redirect to dashboard
 }
 
-
-// function datapush(id, date, object, amount) {
-//   let transaction = { id, date, object, amount: parseFloat(amount) }; // Create transaction object
-  
-//     // Create a new transaction array and update state
-//   const updatedTransactions = [...state.account.transactions, transaction];
-  
-//   updateState('account', {
-//     ...state.account,
-//     transactions: updatedTransactions
-//   });
-
-//   const result = putAccount(state.account.user,state.account); // Send data to create account
-//   console.log(result);
-// }
-
-
 function addTransaction() {
   let dateElement = document.getElementById('Date');
   let objectElement = document.getElementById('Object');
@@ -144,7 +127,7 @@ function addTransaction() {
   let sn = nu.toString();
 
   putAccount(sn, date, object, amount); // Add transaction
-
+  finalbalance();
   
   
   // Clear inputs after adding
@@ -227,6 +210,14 @@ function updateRoute() {
     updateDashboard(); // Update dashboard if on dashboard page
   }
 }
+
+
+function finalbalance() {
+  const amount = document.getElementById('Amount').value;
+  let balance = state.account.balance;
+  document.getElementById('balance').innerHTML = balance + amount ;
+}
+
 
 
 async function refresh() {

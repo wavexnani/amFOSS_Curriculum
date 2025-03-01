@@ -111,7 +111,7 @@ table {
 }
 tr{
     display: grid;
-    grid-template-columns: 100px 200px 50px ;
+    grid-template-columns: 1fr 2fr 1fr;
 }
 
 
@@ -144,5 +144,25 @@ tr{
 
 #nothing {
     padding-left: 50px;
-    color: red;
+    color: #f76b8a;
+}
+
+#Logout {
+    padding: 20px;
+    color: #f76b8a;
+    padding: 5px;
+    background-color: white;
+    border-radius: 5px;
+    z-index: 2;
+    box-shadow: 1px 0px 5px 5px #479595;
+    text-decoration: none;
+}
+
+#container {
+    display: flex;
+}
+
+h3 {
+    color: black;
+    padding: 10px;
 }

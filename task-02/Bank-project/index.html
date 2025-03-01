@@ -51,14 +51,17 @@
           <!-- <a href="/login" onclick="onLinkClick(event)">Logout</a><br>
           <a href="/page3" onclick="onLinkClick(event)">Next page</a> -->
         </header>
-
-
+        
+        <div id="container">
+          <a id="Logout" href="/login" onclick="onLinkClick(event)">Logout</a><br>
         <section id="sectionBalance">
           Balance: <span id="balance"></span><span id="currency"></span>
         </section>
+        </div>
 
 
         <form id="transactionData" action="javascript: addTransaction()">
+          <h3>Instructions : You can add the date, object, amount into your Transactions List by submiting this form.</h3>
           <br>
           <label for="Date">Date :</label>
           <input type="date" id="Date" name="birthday">
@@ -97,7 +100,7 @@
     
     <!-- <template id="page3">
       <h3>This page shows the credits of the person</h3>
-      <a href="/login" onclick="onLinkClick(event)">Logout</a><br>
+      
       <a href="/dashboard" onclick="onLinkClick(event)">Previous page</a>
     </template> -->
 
