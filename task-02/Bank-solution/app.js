@@ -205,6 +205,17 @@ function updateRoute() {
   const app = document.getElementById('app');
   app.innerHTML = ''; // Clear previous content
   app.appendChild(view); // Load new content
+
+  document.getElementById("showFormBtn").addEventListener("click", () => {
+    console.log("Hi");
+    
+    document.getElementById("transactionData").style.display = "block";
+  });
+  
+  document.getElementById("transactionData").addEventListener("submit",  () => {
+    console.log("chandra");
+    document.getElementById("transactionData").style.display = "none"; // Hides the form
+  });
   
   if(path === '/dashboard'){
     updateDashboard(); // Update dashboard if on dashboard page

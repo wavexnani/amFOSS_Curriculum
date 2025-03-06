@@ -53,7 +53,7 @@
         </header>
         
         <div id="container">
-          <a id="Logout" href="/login" onclick="onLinkClick(event)">Logout</a><br>
+          <a id="Logout" href="/login" onclick="onLinkClick(event)">Logout</a>
         <section id="sectionBalance">
           Balance: <span id="balance"></span><span id="currency"></span>
         </section>
@@ -61,7 +61,7 @@
 
 
         <form id="transactionData" action="javascript: addTransaction()">
-          <h3>Instructions : You can add the date, object, amount into your Transactions List by submiting this form.</h3>
+          
           <br>
           <label for="Date">Date :</label>
           <input type="date" id="Date" name="birthday">
@@ -71,17 +71,21 @@
           <input id="Amount" type="number">
           <input type="submit" >
           <br><br>
+          
+        </form>
+
+
+        <br><br><br>
+        <div id="tableList">
           <div id="para">
             <h2 id="description">Description :</h2>
             <h2 id="DashboardDescription"></h2>
           </div>
-        </form>
-        <br><br><br>
-        <div id="tableList">
           <h2 id="list">Transactions List :</h2>
           <h4 id="nothing"></h4>
-          <br>
           <section id="transactions"></section>
+          <br>
+          <button id="showFormBtn">Add Transaction</button>
         </div>
 
     </template>

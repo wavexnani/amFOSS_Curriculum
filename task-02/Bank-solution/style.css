@@ -86,7 +86,7 @@ button {
 
 
 #transactionData {
-    display: block;
+    display: none;
     margin: auto;
     margin-top: 50px;
     padding: 10px;
@@ -114,10 +114,13 @@ tr{
     grid-template-columns: 1fr 2fr 1fr;
 }
 
-
+#showFormBtn {
+    display: block;
+    margin: auto;
+}
 
 #description {
-    padding-left: 30px;
+    
     color: black;
 }
 
@@ -134,7 +137,7 @@ tr{
     display: block;
     margin: auto;
     color: #16c7c7;
-    padding: 5px;
+    padding: 15px;
     width: 30%;
     background-color: white;
     border-radius: 5px;
@@ -148,9 +151,12 @@ tr{
 }
 
 #Logout {
-    padding: 20px;
+    padding: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 80px;
     color: #f76b8a;
-    padding: 5px;
     background-color: white;
     border-radius: 5px;
     z-index: 2;
