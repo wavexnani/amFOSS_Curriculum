@@ -9,7 +9,7 @@
 #define MAX_CMD_LEN 1024
 #define MAX_ARGS 100
 
-// Function to handle the 'cd' command
+// Function to handle the cd command
 void change_directory(char *path) {
     if (path == NULL) {
         // If no path is given, change to home directory
