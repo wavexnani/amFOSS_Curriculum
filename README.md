@@ -1,1 +1,2 @@
-# amFOSS_Curriculum
+# amFOSS Curriculum
+
